@@ -3,22 +3,18 @@ package com.company.server;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class MainServer {
     public static void main(String[] args) throws IOException {
         ServerSocket serverSocket = new ServerSocket(1337);
-        //od tąd
-        Socket acceptedSocket = serverSocket.accept();
-        InputStream inputStream = acceptedSocket.getInputStream();
-        OutputStream outputStream = acceptedSocket.getOutputStream();
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-        String line = null;
-        while ((line = bufferedReader.readLine())!=null){
-            System.out.println(line);
+
+        while (true){
+            Socket acceptedSocket = serverSocket.accept();
+            ExecutorService executorService = Executors.newCachedThreadPool();
+            executorService.submit(new ServerThread(acceptedSocket));
         }
-        inputStream.close();
-        outputStream.close();
-        //do tąd
     }
 }
 
