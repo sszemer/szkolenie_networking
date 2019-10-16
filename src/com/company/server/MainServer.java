@@ -17,5 +17,3 @@ public class MainServer {
         }
     }
 }
-
-//w domu otwierac w watkach nowe polaczenia

@@ -9,11 +9,14 @@ public class ClientThread implements Runnable {
     @Override
     public void run() {
         try {
-            Socket localhost = new Socket("localhost", 1337);
-            OutputStream outputStream = localhost.getOutputStream();
+            Socket socket = new Socket("localhost", 1337);
+            OutputStream outputStream = socket.getOutputStream();
             DataOutputStream dataOutputStream = new DataOutputStream(outputStream);
-            dataOutputStream.writeBytes("elo z clienta");
+            dataOutputStream.writeBytes("elo z clienta\n");
+            dataOutputStream.flush();
+            dataOutputStream.close();
             outputStream.close();
+            socket.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
