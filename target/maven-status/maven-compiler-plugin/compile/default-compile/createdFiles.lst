@@ -1,0 +1,9 @@
+com\company\server\ServerThread.class
+com\company\client\ClientThread.class
+com\company\client\MainClient.class
+chat\UdpConnectionThread.class
+com\company\server\MainServer.class
+chat\UDPMain.class
+nbp\Rate.class
+nbp\Tables.class
+nbp\WalutyMain.class
