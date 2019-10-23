@@ -9,7 +9,7 @@ import java.util.concurrent.Executors;
 
 public class MainServer {
     public static void main(String[] args) throws IOException {
-        ServerSocket serverSocket = new ServerSocket(1337);
+        ServerSocket serverSocket = new ServerSocket(5555);
         ExecutorService executorService = Executors.newCachedThreadPool();
 
         while (true){
