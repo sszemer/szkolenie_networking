@@ -1,9 +1,11 @@
 package nbp;
 
+import java.math.BigDecimal;
+
 public class Rate {
     private String Currency;
     private String Code;
-    private String Mid;
+    private BigDecimal Mid;
 
     public String getCurrency() {
         return Currency;
@@ -21,11 +23,11 @@ public class Rate {
         Code = code;
     }
 
-    public String getMid() {
+    public BigDecimal getMid() {
         return Mid;
     }
 
-    public void setMid(String mid) {
+    public void setMid(BigDecimal mid) {
         Mid = mid;
     }
 }
