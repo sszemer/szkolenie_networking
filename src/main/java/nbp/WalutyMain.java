@@ -12,24 +12,32 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.ArrayList;
 import java.util.List;
 
 public class WalutyMain {
 
     public static void main(String[] args) throws IOException {
-        String[] tableNames = {"A","B"};
         List<Rate> merge=null;
-//        try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            for (String tableName : tableNames) {
-                String output = callWS(tableName);
-                Tables[] tables1 = objectMapper.readValue(output, Tables[].class);
-                //polaczyc obie tabele w jedna bez powtorzen
+
+        Tables[] tablesA  = callWS("A");
+        Tables[] tablesB  = callWS("B");
+
+        boolean found=true;
+        for (Tables tables : tablesA) {
+            tables.getRates().forEach(rate -> {
+                for (Tables tables2 : tablesB) {
+                    tables2.getRates().forEach(rate1 -> {
+                        if (!rate.getCode().equalsIgnoreCase(rate1.getCode())) {
+                            //jak sie nie uda to skopiowac do b
+                            found = false;
+                        }
+                        //albo jak znajdzie to usunac z A a potem merge
+                            tables2.getRates().add(rate);
+                    });
                 }
-//            }
-//            for (Tables tables : tables1) {
-//                System.out.println(tables.getRates());
-//            }
+            });
+        }
 //            tableNames = tableNames.substring(1, tableNames.length()-1);
 //            Tables tables = objectMapper.readValue(tableNames, Tables.class);
 //            System.out.println(tables.getRates().get(0).getCurrency());
@@ -45,12 +53,14 @@ public class WalutyMain {
         }
 
 
-    private static String callWS(String table) throws IOException {
+    private static Tables[] callWS(String table) throws IOException {
         String address = "http://api.nbp.pl/api/exchangerates/tables/"+table+"/?format=json";
         URL url = new URL(address);
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
         InputStream inputStream = urlConnection.getInputStream();
         BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
-        return new String(bufferedInputStream.readAllBytes());
+        String output = new String(bufferedInputStream.readAllBytes());
+        ObjectMapper objectMapper = new ObjectMapper();
+        return objectMapper.readValue(output, Tables[].class);
     }
 }
