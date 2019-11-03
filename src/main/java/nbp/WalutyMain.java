@@ -24,6 +24,7 @@ public class WalutyMain {
         Tables[] tablesA  = callWS("A");
         Tables[] tablesB  = callWS("B");
 
+        System.out.println(tablesA[0].getRates().size());
         System.out.println(tablesB[0].getRates().size());
 
         for (Tables tables : tablesA) {
@@ -31,22 +32,19 @@ public class WalutyMain {
                 for (Tables tables2 : tablesB) {
                     found=true;
                     tables2.getRates().forEach(rate1 -> {
+                        //jak nie znajdzie to skopiowac do b //albo jak znajdzie to usunac z A a potem merge
                         if (!rate.getCode().equalsIgnoreCase(rate1.getCode())) {
-                            //jak nie znajdzie to skopiowac do b
                             found = false;
                         }
-                        //albo jak znajdzie to usunac z A a potem merge
                     });
-                            tables2.getRates().add(rate);
+                    tables2.getRates().add(rate);
                 }
             });
         }
-        for (Tables tables : tablesB) {
-            tables.getRates().stream().forEach(rate -> {
-                System.out.println(rate.getCode());
-                System.out.println(tables.getRates().size());
-            });
-        }
+        System.out.println(tablesB[0].getRates().size());
+        tablesB[0].getRates().stream().forEach(rate -> {
+            System.out.println(rate.getCode());
+        });
     }
 
 
